@@ -9,28 +9,34 @@ import interviewtask.tms.domain.User;
 import interviewtask.tms.dto.FilterDto;
 import interviewtask.tms.dto.FilterDto.SortDirection;
 import interviewtask.tms.repository.TaskRepository;
+import interviewtask.tms.service.impl.TaskServiceImpl;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class TaskServiceTest {
 
-  @MockBean
+  @Mock
   private TaskRepository taskRepository;
 
-  @MockBean
+  @Mock
   private UserService userService;
 
-  @Autowired
   private TaskService taskService;
+
+  @BeforeEach
+  void setUp() {
+    taskService = new TaskServiceImpl(userService, taskRepository);
+  }
 
   @Test
   void createTask() {
@@ -108,7 +114,8 @@ class TaskServiceTest {
         .build();
 
     // when
-    when(taskRepository.findAllByAuthor_Department_IdOrderByCreatedDateAsc(request.getDepartmentId()))
+    when(taskRepository
+        .findAllByAuthor_Department_IdOrderByCreatedDateAsc(request.getDepartmentId()))
         .thenReturn(List.of(expected_1, expected_2));
 
     Flux<Task> actual = taskService.getAllTasks(request);

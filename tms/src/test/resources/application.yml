@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: tms
+
+  datasource:
+    url: ignore
+    driver-class-name: org.postgresql.Driver
+    username: taskTrackerdb
+    password: taskTrackerdb
+
+  jpa:
+    properties:
+      hibernate:
+        default_schema: task_tracker
+
+  flyway:
+    url: ignore
+    schemas: task_tracker
+    user: taskTrackerdb
+    password: taskTrackerdb
+
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+
+services:
+  ums:
+    url: http://localhost:8081

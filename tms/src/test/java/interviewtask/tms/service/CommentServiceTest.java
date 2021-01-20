@@ -1,8 +1,6 @@
 package interviewtask.tms.service;
 
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import interviewtask.tms.domain.Comment;
@@ -10,22 +8,28 @@ import interviewtask.tms.domain.Status;
 import interviewtask.tms.domain.Task;
 import interviewtask.tms.domain.User;
 import interviewtask.tms.repository.CommentRepository;
+import interviewtask.tms.service.impl.CommentServiceImpl;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
-  @MockBean
+  @Mock
   private CommentRepository commentRepository;
 
-  @Autowired
   private CommentService commentService;
+
+  @BeforeEach
+  void setUp() {
+    commentService = new CommentServiceImpl(commentRepository);
+  }
 
   @Test
   void createComment() {
@@ -137,9 +141,6 @@ class CommentServiceTest {
     // when
     when(commentRepository.findById(id))
         .thenReturn(Optional.of(comment));
-
-    when(commentRepository.save(expected))
-        .thenReturn(expected);
 
     commentService.deleteCommentById(id);
 

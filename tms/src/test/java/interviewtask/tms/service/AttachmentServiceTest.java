@@ -6,21 +6,26 @@ import interviewtask.tms.domain.Attachment;
 import interviewtask.tms.domain.Status;
 import interviewtask.tms.domain.Task;
 import interviewtask.tms.repository.AttachmentRepository;
+import interviewtask.tms.service.impl.AttachmentServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class AttachmentServiceTest {
 
-  @MockBean
+  @Mock
   private AttachmentRepository attachmentRepository;
-
-  @Autowired
   private AttachmentService attachmentService;
+
+  @BeforeEach
+  void setUp() {
+    attachmentService = new AttachmentServiceImpl(attachmentRepository);
+  }
 
   @Test
   void createAttachment() {
