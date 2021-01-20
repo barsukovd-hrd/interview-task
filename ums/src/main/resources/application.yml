@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: ums
+
+services:
+  user-info:
+    url: http://ignore.com
+
+server:
+  port: 8081
